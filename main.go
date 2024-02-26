@@ -17,7 +17,7 @@ type login_input struct {
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("got / request\n")
-	io.WriteString(w, "This is my website!\n")
+	io.WriteString(w, "You connected, but try /login!\n")
 }
 func loginRequest(w http.ResponseWriter, r *http.Request) {
 
@@ -34,11 +34,9 @@ func loginRequest(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		// log.Print(t)
-		// log.Printf("Username: %s", t.User)
-		// log.Printf("Password: %s", t.Password)
 		//check credentials
 		if (t.User == "c137@onecause.com") && (t.Password == "#th@nH@rm#y#r!$100%D0p#") {
+			//valid login
 			validation, err := json.Marshal(true)
 			if err != nil {
 				fmt.Printf("Correct credentials, %v", err)
@@ -47,6 +45,7 @@ func loginRequest(w http.ResponseWriter, r *http.Request) {
 				io.WriteString(w, string(validation))
 			}
 		} else {
+			//invalid login
 			validation, err := json.Marshal(false)
 			if err != nil {
 				fmt.Printf("Incorrect credentials, %v", err)
@@ -55,13 +54,9 @@ func loginRequest(w http.ResponseWriter, r *http.Request) {
 				io.WriteString(w, string(validation))
 			}
 		}
-		// error example:
-		// if err := r.ParseForm(); err != nil {
-		// 	fmt.Fprintf(w, "ParseForm() err: %v", err)
-		// 	return
-		// }
 
 	default:
+		//Non-POST request handling
 		fmt.Fprintf(w, "Sorry, only POST methods are supported.")
 	}
 	fmt.Printf("got /login request\n")
