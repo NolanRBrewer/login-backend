@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
 )
 
 type login_input struct {
@@ -33,10 +34,20 @@ func loginRequest(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
-
+		// upon login request capture current time
+		submission_time := time.Now().Format("1504")
+		fmt.Printf(submission_time)
 		//check credentials
 		if (t.User == "c137@onecause.com") && (t.Password == "#th@nH@rm#y#r!$100%D0p#") {
 			//valid login
+			validation, err := json.Marshal(true)
+			if err != nil {
+				fmt.Printf("Correct credentials, %v", err)
+				return
+			} else {
+				io.WriteString(w, string(validation))
+			}
+		} else if t.Token == submission_time {
 			validation, err := json.Marshal(true)
 			if err != nil {
 				fmt.Printf("Correct credentials, %v", err)
