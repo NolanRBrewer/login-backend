@@ -29,25 +29,22 @@ func loginRequest(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		decoder := json.NewDecoder(r.Body)
-		var t login_input
-		err := decoder.Decode(&t)
+		var credentials login_input
+		err := decoder.Decode(&credentials)
 		if err != nil {
 			panic(err)
 		}
 		// upon login request capture current time
 		submission_time := time.Now().Format("1504")
 		fmt.Printf(submission_time)
+
+		/*TODO create a database for users and passwords, set up appropriate query for validating users*/
+
+		/* Example query
+		 */
 		//check credentials
-		if (t.User == "c137@onecause.com") && (t.Password == "#th@nH@rm#y#r!$100%D0p#") {
+		if (credentials.User == "c137@onecause.com") && (credentials.Password == "#th@nH@rm#y#r!$100%D0p#") && (credentials.Token == submission_time) {
 			//valid login
-			validation, err := json.Marshal(true)
-			if err != nil {
-				fmt.Printf("Correct credentials, %v", err)
-				return
-			} else {
-				io.WriteString(w, string(validation))
-			}
-		} else if t.Token == submission_time {
 			validation, err := json.Marshal(true)
 			if err != nil {
 				fmt.Printf("Correct credentials, %v", err)
